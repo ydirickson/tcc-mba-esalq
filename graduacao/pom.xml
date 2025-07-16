@@ -14,14 +14,15 @@
 	<artifactId>graduacao</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 
-	<name>graduacao</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Serviço de Graduação</name>
+	<description>APIs para o Serviço de Graduação</description>
 
 	<url/>
 
 	<licenses>
 		<license/>
 	</licenses>
+	
 	<developers>
 		<developer/>
 	</developers>

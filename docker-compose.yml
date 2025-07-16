@@ -1,0 +1,36 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: graduacao_postgres
+    environment:
+      POSTGRES_DB: graduacao
+      POSTGRES_USER: graduacao
+      POSTGRES_PASSWORD: graduacao
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - internal-net
+
+  graduacao:
+    build:
+      context: ./graduacao
+    container_name: graduacao_app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/graduacao
+      SPRING_DATASOURCE_USERNAME: graduacao
+      SPRING_DATASOURCE_PASSWORD: graduacao
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - internal-net
+
+volumes:
+  pgdata:
+
+networks:
+  internal-net:
+    driver: bridge
