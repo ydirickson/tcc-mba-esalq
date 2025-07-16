@@ -1,0 +1,29 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Start Microservices",
+			"type": "shell",
+			"command": "./manage.sh start",
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Start All Services with Swagger URLs",
+			"type": "shell",
+			"command": "docker-compose up -d && echo 'Serviços iniciados!' && echo '' && echo '🎯 DOCUMENTAÇÃO UNIFICADA:' && echo '   http://localhost:4000' && echo '' && echo '📊 Swagger URLs individuais:' && echo '- Graduation Service: http://localhost:3001/api-docs' && echo '- Diploma Service: http://localhost:3002/docs' && echo '- Signature Service: http://localhost:3003/swagger-ui.html' && echo '' && echo '🔍 Monitoramento:' && echo '- Kafka UI: http://localhost:8080'",
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": []
+		},
+		{
+			"label": "Stop All Services",
+			"type": "shell",
+			"command": "docker-compose down",
+			"group": "build",
+			"isBackground": false,
+			"problemMatcher": []
+		}
+	]
+}
