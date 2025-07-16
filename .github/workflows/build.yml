@@ -33,4 +33,10 @@ jobs:
       - name: Build and analyze
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ydirickson_ydirickson
+        run: |
+          for dir in graduacao; do
+            echo "Executando testes e análise em $dir"
+            cd $dir
+            mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ydirickson_${dir}
+            cd ..
+          done
