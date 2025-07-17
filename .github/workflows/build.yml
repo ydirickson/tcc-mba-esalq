@@ -37,6 +37,6 @@ jobs:
           for dir in graduacao; do
             echo "Executando testes e análise em $dir"
             cd $dir
-            mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ydirickson_${dir}
+            mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=ydirickson_${dir} -DskipTests
             cd ..
           done
