@@ -39,6 +39,7 @@
 		<sonar.organization>ydirickson</sonar.organization>
  		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -51,6 +52,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
 		</dependency>
 
 		<dependency>
