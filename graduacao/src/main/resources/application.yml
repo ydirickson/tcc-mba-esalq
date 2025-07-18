@@ -2,11 +2,19 @@ spring:
   application:
     name: graduacao
 
-datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://postgres:5432/graduacao}
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/graduacao}
     username: ${SPRING_DATASOURCE_USERNAME:graduacao}
     password: ${SPRING_DATASOURCE_PASSWORD:graduacao}
-jpa:
+  
+  jpa:
     hibernate:
-        ddl-auto: update
+      ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate:
+        '[default_schema]': graduacao
+    
+  sql:
+    init:
+      mode: always
