@@ -1,3 +1,12 @@
+logging:
+    level:
+        root: INFO
+        '[org.springframework.web]': WARN
+        '[org.hibernate]': WARN
+        '[com.yourpackage]': DEBUG
+    pattern:
+        console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n"
+
 spring:
     application:
         name: graduacao
@@ -7,6 +16,19 @@ spring:
         url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/graduacao}
         username: ${SPRING_DATASOURCE_USERNAME:graduacao}
         password: ${SPRING_DATASOURCE_PASSWORD:graduacao}
+        driver-class-name: org.postgresql.Driver
+        hikari:
+            maximum-pool-size: 10
+            minimum-idle: 2
+            idle-timeout: 30000
+            pool-name: GraduacaoPool
     jpa:
         hibernate:
             ddl-auto: update
+        show-sql: true
+        properties:
+            hibernate:
+                '[format_sql]': true
+                jdbc:
+                '[time_zone]': UTC
+        open-in-view: false
