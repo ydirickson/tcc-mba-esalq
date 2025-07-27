@@ -7,13 +7,14 @@ import jakarta.persistence.Id;
 import lombok.Data;
 
 @Data
-@Entity(name = "aluno")
-public class Aluno {
-    
+@Entity(name = "curso")
+public class Curso {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String sigla;
     private String nome;
-    private String email;
+    private String descricao;
 
 }
