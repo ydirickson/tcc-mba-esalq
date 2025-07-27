@@ -12,7 +12,7 @@ public class Aluno {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
     private String nome;
     private String email;
 
