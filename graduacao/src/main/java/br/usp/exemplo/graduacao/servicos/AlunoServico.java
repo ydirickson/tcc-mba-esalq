@@ -39,6 +39,9 @@ public class AlunoServico {
   }
 
   public void deletar(Long id) {
+    if(!alunoRepositorio.existsById(id)){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Aluno não encontrado com o ID: " + id);
+    }
     alunoRepositorio.deleteById(id);
   }
 
