@@ -1,54 +1,61 @@
 package br.usp.exemplo.graduacao.controles;
 
-import br.usp.exemplo.graduacao.entidades.Curso;
-import br.usp.exemplo.graduacao.servicos.CursoServico;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
+
+import br.usp.exemplo.graduacao.dtos.CursoDTO;
+import br.usp.exemplo.graduacao.forms.CursoForm;
+import br.usp.exemplo.graduacao.servicos.CursoServico;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/cursos")
+@RequiredArgsConstructor
+@Slf4j
 public class CursoControle {
+
     private final CursoServico cursoServico;
 
-    public CursoControle(CursoServico cursoServico) {
-        this.cursoServico = cursoServico;
-    }
-
-    @GetMapping
-    public List<Curso> listarTodos() {
+    @GetMapping({"","/"})
+    public List<CursoDTO> listarTodos() {
+        log.info("Listando todos os cursos");
         return cursoServico.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Curso> buscarPorId(@PathVariable int id) {
-        return cursoServico.buscarPorId(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public CursoDTO buscarPorId(@PathVariable Long id) {
+        log.info("Buscando curso com ID: {}", id);
+        return cursoServico.buscarPorId(id);
     }
 
     @PostMapping
-    public Curso salvar(@RequestBody Curso curso) {
+    public CursoDTO salvar(@RequestBody @Valid CursoForm curso) {
+        log.info("Salvando novo curso: {}", curso);
         return cursoServico.salvar(curso);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Curso> atualizar(@PathVariable int id, @RequestBody Curso curso) {
-        return cursoServico.buscarPorId(id)
-                .map(existing -> {
-                    curso.setId(id);
-                    return ResponseEntity.ok(cursoServico.salvar(curso));
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public CursoDTO atualizar(@PathVariable Long id, @RequestBody @Valid CursoForm curso) {
+        log.info("Atualizando curso com ID: {}", id);
+        return cursoServico.atualizar(id, curso);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletar(@PathVariable int id) {
-        if (cursoServico.buscarPorId(id).isPresent()) {
-            cursoServico.deletar(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deletar(@PathVariable Long id) {
+        log.info("Deletando curso com ID: {}", id);
+        cursoServico.deletar(id);
     }
 }
