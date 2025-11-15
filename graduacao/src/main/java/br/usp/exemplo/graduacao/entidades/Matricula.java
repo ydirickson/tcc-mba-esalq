@@ -2,7 +2,6 @@ package br.usp.exemplo.graduacao.entidades;
 
 import java.time.LocalDate;
 
-import br.usp.exemplo.graduacao.forms.MatriculaForm;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -36,16 +35,16 @@ public class Matricula {
     @Enumerated(EnumType.STRING)
     private StatusMatricula status;
 
-    public Matricula(MatriculaForm form) {
-        // this.aluno = new Aluno(form.getAlunoId());
-        // this.curso = new Curso(form.getCursoId());
+    public Matricula(Aluno aluno, Curso curso) {
+        this.aluno = aluno;
+        this.curso = curso;
         this.dataMatricula = LocalDate.now();
         this.status = StatusMatricula.CURSANDO;
     }
 
-    public void atualizarDados(MatriculaForm form) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'atualizarDados'");
+    public void atualizarDados(Aluno aluno, Curso curso) {
+        this.aluno = aluno;
+        this.curso = curso;
     }
 }
 
