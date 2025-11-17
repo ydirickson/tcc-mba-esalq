@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.usp.exemplo.graduacao.dtos.CursoDTO;
-import br.usp.exemplo.graduacao.dtos.mappers.CursoMapper;
+import br.usp.exemplo.graduacao.dtos.mappers.DTOMapper;
 import br.usp.exemplo.graduacao.entidades.Curso;
 import br.usp.exemplo.graduacao.forms.CursoForm;
 import br.usp.exemplo.graduacao.repositorios.CursoRepositorio;
@@ -32,7 +32,7 @@ class CursoServicoTest {
     private CursoRepositorio cursoRepositorio;
 
     @Mock
-    private CursoMapper cursoMapper;
+    private DTOMapper dtoMapper;
 
     @InjectMocks
     private CursoServico cursoServico;
@@ -46,7 +46,7 @@ class CursoServicoTest {
         List<CursoDTO> dtos = List.of(new CursoDTO(1L, "Economia", "Economia para gestão"));
 
         when(cursoRepositorio.findAll()).thenReturn(entidades);
-        when(cursoMapper.toDto(entidades)).thenReturn(dtos);
+        when(dtoMapper.toCursoDto(entidades)).thenReturn(dtos);
 
         assertThat(cursoServico.listarTodos()).isEqualTo(dtos);
         verify(cursoRepositorio).findAll();
@@ -58,7 +58,7 @@ class CursoServicoTest {
         CursoDTO dto = new CursoDTO(2L, "Administração", "Administração Pública");
 
         when(cursoRepositorio.findById(2L)).thenReturn(Optional.of(curso));
-        when(cursoMapper.toDto(curso)).thenReturn(dto);
+        when(dtoMapper.toCursoDto(curso)).thenReturn(dto);
 
         assertThat(cursoServico.buscarPorId(2L)).isEqualTo(dto);
     }
@@ -81,7 +81,7 @@ class CursoServicoTest {
 
         Curso salvo = criarCurso(3L, form.getSigla(), form.getNome(), form.getDescricao());
         when(cursoRepositorio.save(any(Curso.class))).thenReturn(salvo);
-        when(cursoMapper.toDto(salvo)).thenReturn(new CursoDTO(3L, form.getNome(), form.getDescricao()));
+        when(dtoMapper.toCursoDto(salvo)).thenReturn(new CursoDTO(3L, form.getNome(), form.getDescricao()));
 
         CursoDTO resultado = cursoServico.salvar(form);
 
@@ -105,7 +105,7 @@ class CursoServicoTest {
         when(cursoRepositorio.save(existente)).thenReturn(existente);
 
         CursoDTO dto = new CursoDTO(4L, form.getNome(), form.getDescricao());
-        when(cursoMapper.toDto(existente)).thenReturn(dto);
+        when(dtoMapper.toCursoDto(existente)).thenReturn(dto);
 
         CursoDTO resultado = cursoServico.atualizar(4L, form);
 

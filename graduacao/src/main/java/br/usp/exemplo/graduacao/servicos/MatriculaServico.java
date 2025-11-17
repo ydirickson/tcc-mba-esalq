@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.usp.exemplo.graduacao.dtos.MatriculaDTO;
-import br.usp.exemplo.graduacao.dtos.mappers.MatriculaMapper;
+import br.usp.exemplo.graduacao.dtos.mappers.DTOMapper;
 import br.usp.exemplo.graduacao.entidades.Aluno;
 import br.usp.exemplo.graduacao.entidades.Curso;
 import br.usp.exemplo.graduacao.entidades.Matricula;
@@ -21,25 +21,25 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MatriculaServico {
     private final MatriculaRepositorio matriculaRepositorio;
-    private final MatriculaMapper matriculaMapper;
+    private final DTOMapper dtoMapper;
     private final AlunoRepositorio alunoRepositorio;
     private final CursoRepositorio cursoRepositorio;
 
     public List<MatriculaDTO> listarTodos() {
-        return matriculaMapper.toDto(matriculaRepositorio.findAll());
+        return dtoMapper.toMatriculaDto(matriculaRepositorio.findAll());
     }
 
     public MatriculaDTO buscarPorId(Long id) {
         Matricula matricula = matriculaRepositorio.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Matrícula não encontrada com o ID: " + id));
-        return matriculaMapper.toDto(matricula);
+        return dtoMapper.toMatriculaDto(matricula);
     }
 
     public MatriculaDTO salvar(MatriculaForm matricula) {
         Aluno aluno = buscarAluno(matricula.getAlunoId());
         Curso curso = buscarCurso(matricula.getCursoId());
         Matricula novo = new Matricula(aluno, curso);
-        return matriculaMapper.toDto(matriculaRepositorio.save(novo));
+        return dtoMapper.toMatriculaDto(matriculaRepositorio.save(novo));
     }
 
     public MatriculaDTO atualizar(Long id, MatriculaForm form) {
@@ -48,7 +48,7 @@ public class MatriculaServico {
         Aluno aluno = buscarAluno(form.getAlunoId());
         Curso curso = buscarCurso(form.getCursoId());
         matriculaExistente.atualizarDados(aluno, curso);
-        return matriculaMapper.toDto(matriculaRepositorio.save(matriculaExistente));
+        return dtoMapper.toMatriculaDto(matriculaRepositorio.save(matriculaExistente));
     }
 
     public void deletar(Long id) {

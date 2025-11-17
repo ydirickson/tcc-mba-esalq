@@ -1,5 +1,5 @@
 # Dockerfile para projeto Spring Boot com Java 21
-FROM eclipse-temurin:21-jdk-alpine as build
+FROM eclipse-temurin:21-jdk-alpine AS build
 WORKDIR /app
 COPY . .
 RUN ./mvnw clean package -DskipTests

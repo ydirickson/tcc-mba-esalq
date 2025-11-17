@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.usp.exemplo.graduacao.dtos.MatriculaDTO;
-import br.usp.exemplo.graduacao.dtos.mappers.MatriculaMapper;
+import br.usp.exemplo.graduacao.dtos.mappers.DTOMapper;
 import br.usp.exemplo.graduacao.entidades.Aluno;
 import br.usp.exemplo.graduacao.entidades.Curso;
 import br.usp.exemplo.graduacao.entidades.Matricula;
@@ -36,7 +36,7 @@ class MatriculaServicoTest {
     private MatriculaRepositorio matriculaRepositorio;
 
     @Mock
-    private MatriculaMapper matriculaMapper;
+    private DTOMapper dtoMapper;
 
     @Mock
     private AlunoRepositorio alunoRepositorio;
@@ -56,7 +56,7 @@ class MatriculaServicoTest {
         List<MatriculaDTO> dtos = List.of(new MatriculaDTO(1L, 1L, 1L));
 
         when(matriculaRepositorio.findAll()).thenReturn(entidades);
-        when(matriculaMapper.toDto(entidades)).thenReturn(dtos);
+        when(dtoMapper.toMatriculaDto(entidades)).thenReturn(dtos);
 
         assertThat(matriculaServico.listarTodos()).isEqualTo(dtos);
     }
@@ -67,7 +67,7 @@ class MatriculaServicoTest {
         MatriculaDTO dto = new MatriculaDTO(2L, 3L, 4L);
 
         when(matriculaRepositorio.findById(2L)).thenReturn(Optional.of(matricula));
-        when(matriculaMapper.toDto(matricula)).thenReturn(dto);
+        when(dtoMapper.toMatriculaDto(matricula)).thenReturn(dto);
 
         assertThat(matriculaServico.buscarPorId(2L)).isEqualTo(dto);
     }
@@ -94,7 +94,7 @@ class MatriculaServicoTest {
         when(alunoRepositorio.findById(1L)).thenReturn(Optional.of(aluno));
         when(cursoRepositorio.findById(2L)).thenReturn(Optional.of(curso));
         when(matriculaRepositorio.save(any(Matricula.class))).thenReturn(salvo);
-        when(matriculaMapper.toDto(salvo)).thenReturn(new MatriculaDTO(5L, 1L, 2L));
+        when(dtoMapper.toMatriculaDto(salvo)).thenReturn(new MatriculaDTO(5L, 1L, 2L));
 
         MatriculaDTO resultado = matriculaServico.salvar(form);
 
@@ -149,7 +149,7 @@ class MatriculaServicoTest {
         when(matriculaRepositorio.save(existente)).thenReturn(existente);
 
         MatriculaDTO dto = new MatriculaDTO(4L, 2L, 3L);
-        when(matriculaMapper.toDto(existente)).thenReturn(dto);
+        when(dtoMapper.toMatriculaDto(existente)).thenReturn(dto);
 
         MatriculaDTO resultado = matriculaServico.atualizar(4L, form);
 

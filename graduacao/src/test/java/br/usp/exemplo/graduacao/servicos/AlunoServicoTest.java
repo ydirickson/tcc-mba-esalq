@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.usp.exemplo.graduacao.dtos.AlunoDTO;
-import br.usp.exemplo.graduacao.dtos.mappers.AlunoMapper;
+import br.usp.exemplo.graduacao.dtos.mappers.DTOMapper;
 import br.usp.exemplo.graduacao.entidades.Aluno;
 import br.usp.exemplo.graduacao.forms.AlunoForm;
 import br.usp.exemplo.graduacao.repositorios.AlunoRepositorio;
@@ -32,7 +32,7 @@ class AlunoServicoTest {
     private AlunoRepositorio alunoRepositorio;
 
     @Mock
-    private AlunoMapper alunoMapper;
+    private DTOMapper dtoMapper;
 
     @InjectMocks
     private AlunoServico alunoServico;
@@ -46,11 +46,11 @@ class AlunoServicoTest {
         List<AlunoDTO> dtos = List.of(new AlunoDTO(1L, "Fulano", "fulano@usp.br"));
 
         when(alunoRepositorio.findAll()).thenReturn(entidades);
-        when(alunoMapper.toDto(entidades)).thenReturn(dtos);
+        when(dtoMapper.toAlunoDto(entidades)).thenReturn(dtos);
 
         assertThat(alunoServico.listarTodos()).isEqualTo(dtos);
         verify(alunoRepositorio).findAll();
-        verify(alunoMapper).toDto(entidades);
+        verify(dtoMapper).toAlunoDto(entidades);
     }
 
     @Test
@@ -59,7 +59,7 @@ class AlunoServicoTest {
         AlunoDTO dto = new AlunoDTO(7L, "Beltrano", "beltrano@usp.br");
 
         when(alunoRepositorio.findById(7L)).thenReturn(Optional.of(aluno));
-        when(alunoMapper.toDto(aluno)).thenReturn(dto);
+        when(dtoMapper.toAlunoDto(aluno)).thenReturn(dto);
 
         assertThat(alunoServico.obterPorId(7L)).isEqualTo(dto);
     }
@@ -81,7 +81,7 @@ class AlunoServicoTest {
 
         Aluno salvo = criarAluno(3L, form.getNome(), form.getEmail());
         when(alunoRepositorio.save(any(Aluno.class))).thenReturn(salvo);
-        when(alunoMapper.toDto(salvo)).thenReturn(new AlunoDTO(3L, form.getNome(), form.getEmail()));
+        when(dtoMapper.toAlunoDto(salvo)).thenReturn(new AlunoDTO(3L, form.getNome(), form.getEmail()));
 
         AlunoDTO resultado = alunoServico.salvar(form);
 
@@ -102,7 +102,7 @@ class AlunoServicoTest {
         when(alunoRepositorio.findById(5L)).thenReturn(Optional.of(existente));
         when(alunoRepositorio.save(existente)).thenReturn(existente);
         AlunoDTO dto = new AlunoDTO(5L, form.getNome(), form.getEmail());
-        when(alunoMapper.toDto(existente)).thenReturn(dto);
+        when(dtoMapper.toAlunoDto(existente)).thenReturn(dto);
 
         AlunoDTO resultado = alunoServico.atualizar(5L, form);
 

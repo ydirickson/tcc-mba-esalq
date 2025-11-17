@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import br.usp.exemplo.graduacao.dtos.CursoDTO;
-import br.usp.exemplo.graduacao.dtos.mappers.CursoMapper;
+import br.usp.exemplo.graduacao.dtos.mappers.DTOMapper;
 import br.usp.exemplo.graduacao.entidades.Curso;
 import br.usp.exemplo.graduacao.forms.CursoForm;
 import br.usp.exemplo.graduacao.repositorios.CursoRepositorio;
@@ -17,22 +17,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CursoServico {
     private final CursoRepositorio cursoRepositorio;
-    private final CursoMapper cursoMapper;
+    private final DTOMapper dtoMapper;
 
     public List<CursoDTO> listarTodos() {
-        return cursoMapper.toDto(cursoRepositorio.findAll());
+        return dtoMapper.toCursoDto(cursoRepositorio.findAll());
     }
 
     public CursoDTO buscarPorId(Long id) {
         Curso curso = cursoRepositorio.findById(id).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curso não encontrado com o ID: " + id));
-        return cursoMapper.toDto(curso);
+        return dtoMapper.toCursoDto(curso);
     }
 
     public CursoDTO salvar(CursoForm curso) {
         Curso entidade = new Curso(curso);
         Curso novo = this.cursoRepositorio.save(entidade);
-        return cursoMapper.toDto(novo);
+        return dtoMapper.toCursoDto(novo);
     }
 
     public CursoDTO atualizar(Long id, CursoForm curso) {
@@ -42,7 +42,7 @@ public class CursoServico {
         entidade.setDescricao(curso.getDescricao());
         entidade.setSigla(curso.getSigla());
         Curso retorno = this.cursoRepositorio.save(entidade);
-        return cursoMapper.toDto(retorno);
+        return dtoMapper.toCursoDto(retorno);
     }
 
     public void deletar(Long id) {
