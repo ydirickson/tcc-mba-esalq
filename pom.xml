@@ -19,6 +19,7 @@
 
     <modules>
         <module>graduacao</module>
+        <module>posgraduacao</module>
     </modules>
 
     <properties>
